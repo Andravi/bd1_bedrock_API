@@ -8,4 +8,5 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL') or \
         'postgresql://usuario:senha@localhost/nome_do_banco'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    TEMPLATES_AUTO_RELOAD = True
 
