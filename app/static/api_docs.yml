@@ -1,0 +1,624 @@
+openapi: 3.0.0
+info:
+  title: API de Universos e Anotações
+  description: API para gerenciamento de universos fictícios e suas anotações relacionadas
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+    description: Servidor local de desenvolvimento
+tags:
+  - name: Universos
+    description: Operações com universos
+  - name: Anotações
+    description: Operações com anotações
+  - name: Categorias
+    description: Operações com categorias
+  # Adicione outras tags conforme necessário
+
+paths:
+  /universos:
+    get:
+      tags: [Universos]
+      summary: Lista todos os universos
+      responses:
+        200:
+          description: Lista de universos retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Universo'
+    post:
+      tags: [Universos]
+      summary: Cria um novo universo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UniversoInput'
+      responses:
+        201:
+          description: Universo criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Universo criado com sucesso
+
+  /universos/{nome}:
+    get:
+      tags: [Universos]
+      summary: Obtém um universo específico
+      parameters:
+        - in: path
+          name: nome
+          required: true
+          schema:
+            type: string
+          description: Nome do universo
+      responses:
+        200:
+          description: Dados do universo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Universo'
+        404:
+          description: Universo não encontrado
+    put:
+      tags: [Universos]
+      summary: Atualiza um universo
+      parameters:
+        - in: path
+          name: nome
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UniversoUpdate'
+      responses:
+        200:
+          description: Universo atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Universo atualizado com sucesso
+    delete:
+      tags: [Universos]
+      summary: Remove um universo
+      parameters:
+        - in: path
+          name: nome
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Universo removido com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Universo removido com sucesso
+
+  /anotacoes:
+    get:
+      tags: [Anotações]
+      summary: Lista todas as anotações
+      responses:
+        200:
+          description: Lista de anotações retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Anotacao'
+    
+    post:
+      tags: [Anotações]
+      summary: Cria uma nova anotação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnotacaoInput'
+      responses:
+        201:
+          description: Anotação criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+
+  /anotacoes/{titulo}:
+    get:
+      tags: [Anotações]
+      summary: Obtém uma anotação específica
+      parameters:
+        - in: path
+          name: titulo
+          required: true
+          schema:
+            type: string
+          description: Título da anotação
+      responses:
+        200:
+          description: Dados da anotação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anotacao'
+    
+    put:
+      tags: [Anotações]
+      summary: Atualiza uma anotação existente
+      parameters:
+        - in: path
+          name: titulo
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnotacaoUpdate'
+      responses:
+        200:
+          description: Anotação atualizada com sucesso
+    
+    delete:
+      tags: [Anotações]
+      summary: Remove uma anotação
+      parameters:
+        - in: path
+          name: titulo
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Anotação removida com sucesso
+
+  # Seção para Tipos de Anotação
+  /tipos_anotacao:
+    get:
+      tags: [Tipos de Anotação]
+      summary: Lista todos os tipos de anotação
+      responses:
+        200:
+          description: Lista de tipos de anotação
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TipoAnotacao'
+    
+    post:
+      tags: [Tipos de Anotação]
+      summary: Cria um novo tipo de anotação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoAnotacaoInput'
+      responses:
+        201:
+          description: Tipo de anotação criado com sucesso
+
+  /tipos_anotacao/{nome}:
+    get:
+      tags: [Tipos de Anotação]
+      summary: Obtém um tipo de anotação específico
+      parameters:
+        - in: path
+          name: nome
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Dados do tipo de anotação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoAnotacao'
+    
+    put:
+      tags: [Tipos de Anotação]
+      summary: Atualiza um tipo de anotação existente
+      parameters:
+        - in: path
+          name: nome
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoAnotacaoUpdate'
+      responses:
+        200:
+          description: Tipo de anotação atualizado com sucesso
+    
+    delete:
+      tags: [Tipos de Anotação]
+      summary: Remove um tipo de anotação
+      parameters:
+        - in: path
+          name: nome
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Tipo de anotação removido com sucesso
+
+  /categorias:
+    get:
+      tags: [Categorias]
+      summary: Lista todas as categorias
+      responses:
+        200:
+          description: Lista de categorias retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categoria'
+        500:
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      tags: [Categorias]
+      summary: Cria uma nova categoria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoriaInput'
+      responses:
+        201:
+          description: Categoria criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        400:
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /categorias/{nome}:
+    get:
+      tags: [Categorias]
+      summary: Obtém uma categoria específica
+      parameters:
+        - in: path
+          name: nome
+          required: true
+          schema:
+            type: string
+          description: Nome da categoria
+      responses:
+        200:
+          description: Dados da categoria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+        404:
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      tags: [Categorias]
+      summary: Atualiza uma categoria existente
+      parameters:
+        - in: path
+          name: nome
+          required: true
+          schema:
+            type: string
+          description: Nome da categoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoriaUpdate'
+      responses:
+        200:
+          description: Categoria atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        400:
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      tags: [Categorias]
+      summary: Remove uma categoria
+      parameters:
+        - in: path
+          name: nome
+          required: true
+          schema:
+            type: string
+          description: Nome da categoria
+      responses:
+        200:
+          description: Categoria removida com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        404:
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+
+components:
+  schemas:
+    Universo:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Marvel"
+        resumo:
+          type: string
+          example: "Universo de super-heróis da Marvel Comics"
+        ultima_edicao:
+          type: string
+          format: date-time
+          example: "2023-01-15T12:00:00Z"
+        data_criacao:
+          type: string
+          format: date-time
+          example: "2023-01-01T00:00:00Z"
+    UniversoInput:
+      type: object
+      required:
+        - nome
+      properties:
+        nome:
+          type: string
+          example: "DC"
+        resumo:
+          type: string
+          example: "Universo de super-heróis da DC Comics"
+        ultima_edicao:
+          type: string
+          format: date-time
+          example: "2023-01-15T12:00:00Z"
+        data_criacao:
+          type: string
+          format: date-time
+          example: "2023-01-01T00:00:00Z"
+    UniversoUpdate:
+      type: object
+      properties:
+        resumo:
+          type: string
+          example: "Novo resumo do universo"
+    
+    Categoria:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Heróis"
+        descricao:
+          type: string
+          example: "Personagens heroicos"
+      required:
+        - nome
+    
+    CategoriaInput:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Vilões"
+          description: Nome único da categoria
+        descricao:
+          type: string
+          example: "Personagens antagonistas"
+          description: Descrição detalhada
+      required:
+        - nome
+    
+    CategoriaUpdate:
+      type: object
+      properties:
+        descricao:
+          type: string
+          example: "Nova descrição para a categoria"
+    
+    SuccessMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Operação realizada com sucesso"
+    
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Mensagem de erro detalhada"
+        status_code:
+          type: integer
+          example: 404
+    Anotacao:
+      type: object
+      properties:
+        titulo:
+          type: string
+          example: "Origem do Batman"
+        descricao:
+          type: string
+          example: "História da origem do Cavaleiro das Trevas"
+        data_criacao:
+          type: string
+          format: date-time
+        ultima_edicao:
+          type: string
+          format: date-time
+        nuniverso:
+          type: string
+          example: "DC Comics"
+        tipoAnota:
+          type: string
+          example: "Personagem"
+        ntemplate_anot:
+          type: string
+          example: "template_herois"
+      required:
+        - titulo
+        - nuniverso
+
+    AnotacaoInput:
+      type: object
+      properties:
+        titulo:
+          type: string
+          example: "Novo Herói"
+        descricao:
+          type: string
+          example: "Descrição detalhada"
+        nuniverso:
+          type: string
+          example: "Marvel"
+        tipoAnota:
+          type: string
+          example: "Personagem"
+        ntemplate_anot:
+          type: string
+          example: "template_herois"
+      required:
+        - titulo
+        - nuniverso
+
+    AnotacaoUpdate:
+      type: object
+      properties:
+        descricao:
+          type: string
+          example: "Descrição atualizada"
+        tipoAnota:
+          type: string
+          example: "Evento"
+        ntemplate_anot:
+          type: string
+          example: "template_eventos"
+
+    TipoAnotacao:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Personagem"
+        descricao:
+          type: string
+          example: "Um personagem do universo"
+        tipo_pai:
+          type: string
+          example: "Entidade"
+      required:
+        - nome
+
+    TipoAnotacaoInput:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Local"
+        descricao:
+          type: string
+          example: "Um lugar do universo"
+        tipo_pai:
+          type: string
+          example: "Entidade"
+      required:
+        - nome
+
+    TipoAnotacaoUpdate:
+      type: object
+      properties:
+        descricao:
+          type: string
+          example: "Nova descrição"
+        tipo_pai:
+          type: string
+          example: "NovoPai"
