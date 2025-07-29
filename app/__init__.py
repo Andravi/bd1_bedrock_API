@@ -45,7 +45,7 @@ def criar_view_resumo_universo():
             SELECT 
                 u.Nome AS Universo,
                 COUNT(DISTINCT a.Titulo) AS Total_Anotacoes,
-                COUNT(DISTINCT CASE WHEN ta.tipo_pai_nome = 'Personagem' THEN a.Titulo END) AS Personagens,
+                COUNT(DISTINCT CASE WHEN a.tipo_anota = 'Personagem' THEN a.Titulo END) AS Personagens,
                 COUNT(DISTINCT CASE WHEN ta.tipo_pai_nome = 'Local' THEN a.Titulo END) AS Locais,
                 COUNT(DISTINCT CASE WHEN ta.tipo_pai_nome = 'Evento' THEN a.Titulo END) AS Eventos,
                 (

@@ -1,0 +1,73 @@
+# Criar universo
+
+curl -X POST http://localhost:5000/api/universos \
+-H "Content-Type: application/json" \
+-d '{
+  "nome": "Marvel",
+  "resumo": "Universo de super-heróis da Marvel Comics",
+  "data_criacao": "2023-01-01"
+}'
+
+curl -X GET http://localhost:5000/api/universos
+
+
+# Criar tipo de anotação
+
+curl -X POST http://localhost:5000/api/tipos_anotacao \
+-H "Content-Type: application/json" \
+-d '{
+  "nome": "Personagem",
+  "descricao": "Heróis e vilões do universo"
+}'
+
+# Criar uma anotação de tipo Personagem
+
+curl -X POST http://localhost:5000/api/anotacoes \
+-H "Content-Type: application/json" \
+-d '{
+  "titulo": "Homem de Ferro",
+  "descricao": "Tony Stark, o gênio bilionário",
+  "nuniverso": "Marvel",
+  "tipoAnota": "Personagem",
+  "data_criacao": "2023-01-15"
+}'
+
+
+# ver a View de Resumo dos universos
+
+curl -X GET http://localhost:5000/api/resumo_universo
+
+
+# Um novo Personagem
+    
+curl -X POST http://localhost:5000/api/anotacoes \
+-H "Content-Type: application/json" \
+-d '{
+  "titulo": "Homem-Aranha",
+  "descricao": "Peter Parker, o amigão da vizinhança",
+  "nuniverso": "Marvel",
+  "tipoAnota": "Personagem",
+  "data_criacao": "2023-01-20"
+}'
+
+
+# Editar personagem
+curl -X PUT http://localhost:5000/api/anotacoes/Homem-Aranha \
+-H "Content-Type: application/json" \
+-d '{
+  "descricao": "Peter Parker, um simples fotógrafo"
+}'
+
+# Usando função
+curl -X GET http://localhost:5000/api/universos/pers_count/Marvel
+
+# Hora de deletar
+
+curl -X DELETE http://localhost:5000/api/anotacoes/Homem%20de%20Ferro
+curl -X DELETE http://localhost:5000/api/anotacoes/Homem-Aranha
+
+# Deletar tipo Personagem
+curl -X DELETE http://localhost:5000/api/tipos_anotacao/Personagem
+
+# Deletar universo Marvel
+
