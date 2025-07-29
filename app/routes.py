@@ -2,8 +2,25 @@ from flask import Blueprint, request, jsonify
 from app.models import *
 from app import db
 from datetime import datetime, timezone
+from sqlalchemy import text
+
 
 main_bp = Blueprint('main', __name__, url_prefix='/api')
+
+#View
+@main_bp.route('/resumo_universo', methods=['GET'])
+def get_resumo_universo():
+    try:
+        # Executa a query e obtém os resultados como objetos Row
+        resultados = db.session.execute(text("SELECT * FROM Resumo_Universo_Completo")).fetchall()
+        
+        # Converte cada Row para dicionário usando _asdict()
+        dados = [row._asdict() for row in resultados]
+        
+        return jsonify(dados)
+        
+    except Exception as e:
+        return jsonify({"error": "Erro ao processar a requisição"}), 500
 
 # Universos
 @main_bp.route('/universos', methods=['GET', 'POST'])
